@@ -17,7 +17,11 @@ def main():
         runs=5
     )
 
-    print("Embeddings: ", generator.generate_embedding(content))
+    for index_i, emb1 in enumerate(content):
+        print(f'\nTesting content #{index_i}:')
+        for index_j, emb2 in enumerate(content):
+            print(f'Similarity between {index_i} and {index_j}: ', generator.compare(emb1, emb2))
+
     
 
 if __name__ == "__main__":

@@ -56,3 +56,4 @@ def full_profile(func, *args, runs=5):
     print(f"\nMenor tempo: {min(results):.4f}s")
     print(f"Maior tempo: {max(results):.4f}s")
     print(f"Tempo médio: {avg:.4f}s")
+    print('===========')
