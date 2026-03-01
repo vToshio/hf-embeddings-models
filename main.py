@@ -1,26 +1,26 @@
 from dotenv import load_dotenv
 
-from services.extraction.io_strategy import IOExtractionStrategy
-from services import EmbeddingService
+from services import EmbeddingService, IOExtractionService
 from profiling import warmup, full_profile
 
 load_dotenv()
 
 def main():
-    content = IOExtractionStrategy.extract()
+    files = sorted(IOExtractionService.extract(), key=lambda file: file.name)
     generator = EmbeddingService()
-    warmup(generator, content[1], 5)
+    warmup(generator, files[0].content, 5)
 
+    content = [f.content for f in files]
     full_profile(
         generator.generate_embedding,
         content,
         runs=5
     )
 
-    for index_i, emb1 in enumerate(content):
-        print(f'\nTesting content #{index_i}:')
-        for index_j, emb2 in enumerate(content):
-            print(f'Similarity between {index_i} and {index_j}: ', generator.compare(emb1, emb2))
+    for file_i in files:
+        print(f'\nTesting content #{file_i.name}:')
+        for file_j in files:
+            print(f'Similarity with "{file_j.name}":\t', generator.compare(file_i.content, file_j.content))
 
     
 
